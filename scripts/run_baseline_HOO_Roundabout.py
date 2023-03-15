@@ -32,7 +32,7 @@ if __name__ == '__main__':
                              '0.5*0.5/batch_size).')
     parser.add_argument('--nHOOs', type=int, default=1, help='number of HyHOO instances to use. (default: 1)')
     parser.add_argument('--batch_size', type=int, default=10, help='batch size parameter. (default: 10)')
-    parser.add_argument('--output', type=str, default='output_roundabout.dat',
+    parser.add_argument('--output', type=str, default='output_baseline_roundabout.dat',
                         help='file name to save the results. (default: ./output_synthetic.dat)')
     parser.add_argument('--seed', type=int, default=1024, help='random seed for reproducibility. (default: 1024)')
     parser.add_argument('--eval_mult', type=int, default=100, help='sampling budget for final evaluation by '

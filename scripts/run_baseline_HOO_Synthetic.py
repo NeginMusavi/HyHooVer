@@ -5,6 +5,7 @@ import numpy as np
 import time
 import hyhoover
 import random
+
 import models
 
 model_names = sorted(name for name in models.__dict__
@@ -31,7 +32,7 @@ if __name__ == '__main__':
                              '0.5*0.5/batch_size).')
     parser.add_argument('--nHOOs', type=int, default=1, help='number of HyHOO instances to use. (default: 1)')
     parser.add_argument('--batch_size', type=int, default=10, help='batch size parameter. (default: 10)')
-    parser.add_argument('--output', type=str, default='output_lqr.dat',
+    parser.add_argument('--output', type=str, default='output_baseline_synthetic.dat',
                         help='file name to save the results. (default: ./output_synthetic.dat)')
     parser.add_argument('--seed', type=int, default=1024, help='random seed for reproducibility. (default: 1024)')
     parser.add_argument('--eval_mult', type=int, default=100, help='sampling budget for final evaluation by '
@@ -63,28 +64,12 @@ if __name__ == '__main__':
     out_file.write('seed: ' + str(args.seed) + '\n')
     out_file.write('-------------------------------------------------------\n')
 
-    if args.model == 'Synthetic':
-        if args.args is None:
-            raise ValueError('Please specify the s parameter using --args')
-        model = models.__dict__[args.model](nc=args.args[0], d=args.args[1])
-    else:
-        model = models.__dict__[args.model]()
-
-    if args.eval:
-        value = 0
-        for _ in range(args.eval_mult):
-            reward = model(np.array(args.init))
-            value = value + reward
-        value = value / args.eval_mult
-        print('prob: %.5f'%value)
-        exit()
-
     num_exp = args.nRuns
 
     # Calculate parameter sigma for UCB.
     # sqrt(0.5*0.5/args.batch_size) is a valid parameter for any model.
     # The user can also pass smaller sigma parameters to encourage the
-    # algorithm to explore deeper in the tree.r
+    # algorithm to explore deeper in the tree.
     if args.sigma is None:
         sigma = np.sqrt(0.5 * 0.5 / args.batch_size)
     else:
@@ -92,7 +77,9 @@ if __name__ == '__main__':
 
     rho_max = args.rho_max
 
-    total_budgets = [150, 250, 500, 750, 1000, 1250, 1500, 1750, 2000, 2500, 5000]
+    total_budgets = [2000, 5000, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000,
+                     200000, 300000, 400000, 500000, 600000, 700000]  # 10 modes + 10D
+
     total_num_queries = []
     total_num_nodes = []
     total_running_times = []
@@ -120,11 +107,15 @@ if __name__ == '__main__':
         n_queries_ = []
         n_nodes_ = []
 
-        budget_for_each_HOO = (b - args.eval_mult * args.nHOOs) / args.nHOOs
-        
+        budget_for_each_HOO = b / args.args[0] / args.nHOOs - args.eval_mult
+        print(budget_for_each_HOO)
+        n_steps = 1
+
+        fixed_seed = args.seed
+
         for _n in range(num_exp):
 
-            print("-------------------------------------")
+            print("-------------------------------------------------------")
             print("experiment:", (_n + 1))
             out_file.write('-------------------------------------------------------\n')
             out_file.write('experiment: ' + str(_n + 1) + '\n')
@@ -135,30 +126,59 @@ if __name__ == '__main__':
             # set random seed for reproducibility
             random.seed(fixed_seed + _n + s_)
             np.random.seed(fixed_seed + _n + s_)
-            SiMC = model
 
-            try:
-                # call hoover.estimate_max_probability with the model and parameters for each experiment
-                memory_usage, overall_best_cells, overall_best_points, depth, overall_best_mean_values, nq = \
-                    hyhoover.estimate_max_probability(SiMC, args.nHOOs, rho_max, sigma, budget_for_each_HOO,
-                                                    args.batch_size, args.rnd_sampling, out_file,
-                                                    eval_mult=args.eval_mult)
-            except AttributeError as e:
-                print(e)
-                continue
+            overall_best_mean_values_after_comparison = [None] * n_steps
+            overall_best_cells_after_comparison = [None] * n_steps
+            overall_best_points_after_comparison = [None] * n_steps
+            depth_after_comparison = [None] * n_steps
+            max_values = [-1000] * n_steps
+            for c in range(args.args[0]):
+
+                print("--------------------------------------")
+                print("-----category number:-----", str(c + 1))
+                print("--------------------------------------")
+                out_file.write('-----------------------------\n')
+                out_file.write('-----category number:-----' + str(c + 1) + '\n')
+                out_file.write('-----------------------------\n')
+
+                if args.model == 'Synthetic_baseline':
+                    if args.args is None:
+                        raise ValueError('Please specify the s parameter using --args')
+                    model = models.__dict__[args.model](mode_index=c, nc=args.args[0], d=args.args[1])
+                if args.model == 'CircularEnvScen_baseline':
+                    if args.args is None:
+                        raise ValueError('Please specify the s parameter using --args')
+                    model = models.__dict__[args.model](category_index=c)
+
+                simc = model
+                try:
+                    # call hoover.estimate_max_probability with the model and parameters
+                    memory_usage, overall_best_cells, overall_best_points, depth, overall_best_mean_values, nq = \
+                        hyhoover.estimate_max_probability(simc, args.nHOOs, rho_max, sigma, budget_for_each_HOO,
+                                                        args.batch_size, args.rnd_sampling,
+                                                        out_file,
+                                                        eval_mult=args.eval_mult)
+                except AttributeError as e:
+                    print(e)
+                    continue
+
+                for b in range(min(len(max_values), len(overall_best_mean_values))):
+                    if overall_best_mean_values[b] >= max_values[b]:
+                        max_values[b] = overall_best_mean_values[b]
+                        overall_best_cells_after_comparison[b] = overall_best_cells[b]
+                        overall_best_points_after_comparison[b] = overall_best_points[b]
+                        depth_after_comparison[b] = depth[b]
+
+            overall_best_mean_values_after_comparison = max_values
 
             end_time = time.time()
             running_time = end_time - start_time
 
             running_times_.append(running_time)
-            memory_usages_.append(memory_usage/1024.0/1024.0)
-            optimal_values_.append(np.array(overall_best_mean_values))
-            optimal_xs_.append(overall_best_points)
-            depths_.append(depth)
-
-            # Get the real number of queries from the model object.
-            # It may be a little bit different from the budget.
-            # n_queries = SiMC.cnt_queries
+            memory_usages_.append(memory_usage / 1024.0 / 1024.0)
+            optimal_values_.append(np.array(overall_best_mean_values_after_comparison))
+            optimal_xs_.append(overall_best_points_after_comparison)
+            depths_.append(depth_after_comparison)
             n_queries_.append(nq[0])
             n_nodes_.append(nq[0])
 
@@ -171,12 +191,14 @@ if __name__ == '__main__':
         n_queries = np.mean(np.array(n_queries_))
         n_nodes = np.mean(np.array(n_nodes_))
 
-        out_file.write('num_queries: ' + str(n_queries) + '\nnum_nodes: ' + str(n_nodes) + '\nrunning_times: ' + str(running_times) + '\nmemory_usages: ' + str(
-        memory_usages) + '\noptimal_values_mean: ' + str(mean_optimal_values) + '\noptimal_values_std: ' + str(std_optimal_values) + '\noptimal_xs: ' + str(
-        optimal_xs) + '\ndepths: ' + str(depths))
-        out_file.write('-------------------------------------------------------\n')         
+        out_file.write('num_queries: ' + str(n_queries) + '\nnum_nodes: ' + str(n_nodes) + '\nrunning_times: ' + str(
+            running_times) + '\nmemory_usages: ' + str(
+            memory_usages) + '\noptimal_values_mean: ' + str(mean_optimal_values) + '\noptimal_values_std: ' + str(
+            std_optimal_values) + '\noptimal_xs: ' + str(
+            optimal_xs) + '\ndepths: ' + str(depths))
+        out_file.write('-------------------------------------------------------\n')
 
-        total_num_queries.append((n_queries + args.eval_mult) * args.nHOOs)
+        total_num_queries.append((n_queries + args.eval_mult) * args.nHOOs * args.args[0])
         total_num_nodes.append(n_nodes)
         total_mean_optimal_values.append(mean_optimal_values)
         total_std_optimal_values.append(std_optimal_values)
@@ -189,22 +211,24 @@ if __name__ == '__main__':
     print('===================================================================')
     print('Final Results:')
     print('budget: ' + str(total_budgets))
-    # print('running time (s): %.2f +/- %.3f'%(np.mean(running_times), np.std(running_times)))
-    # print('memory usage (MB): %.2f +/- %.3f'%(np.mean(memory_usages), np.std(memory_usages)))
     print('running time (s):' + str(total_running_times))
     print('memory usage (MB):' + str(total_memory_usages))
     print('n_nodes: ' + str(total_num_nodes))
     print('actual n_queries: ' + str(total_num_queries))
     print('optimal_values_mean:', str(total_mean_optimal_values))
     print('optimal_values_std:', str(total_std_optimal_values))
-    print('optimal_xs: '+str(total_optimal_xs))
+    print('optimal_xs: ' + str(total_optimal_xs))
     print('depth: ' + str(total_depths))
 
     out_file.write('=======================================================\n')
     out_file.write('=======================================================\n')
     out_file.write('Final Results: ' + '\n')
     out_file.write('=======================================================\n')
-    out_file.write('budgets: ' + str(total_budgets) + '\nnum_queries: ' + str(total_num_queries) + '\nnum_nodes: ' + str(total_num_nodes) + '\nrunning_times: ' + str(total_running_times) + '\nmemory_usages: ' + str(
-        total_memory_usages) + '\noptimal_values_mean: ' + str(total_mean_optimal_values) + '\noptimal_values_std: ' + str(total_std_optimal_values) + '\noptimal_xs: ' + str(
-        total_optimal_xs) + '\ndepths: ' + str(total_depths))
+    out_file.write(
+        'budgets: ' + str(total_budgets) + '\nnum_queries: ' + str(total_num_queries) + '\nnum_nodes: ' + str(
+            total_num_nodes) + '\nrunning_times: ' + str(total_running_times) + '\nmemory_usages: ' + str(
+            total_memory_usages) + '\noptimal_values_mean: ' + str(
+            total_mean_optimal_values) + '\noptimal_values_std: ' + str(
+            total_std_optimal_values) + '\noptimal_xs: ' + str(
+            total_optimal_xs) + '\ndepths: ' + str(total_depths))
     out_file.close()
