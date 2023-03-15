@@ -26,11 +26,14 @@ git clone https://github.com/NeginMusavi/HyHooVer.git
 
 
 # Usage
-To use HyHooVer we need to run check.py. By running:
+To use HyHooVer we need to run check.py. By running the follwoing command
+
 ```
 python3 check.py --help
 ```
-you will find the following output:
+
+you will find the following output
+
 
 ```
 usage: check.py [-h] [--model MODEL] [--args ARGS [ARGS ...]] [--nRuns NRUNS]
@@ -71,12 +74,13 @@ optional arguments:
                         randomly. (default: False)
 ```
 
-For instance let's check the Syntehtic model located in models folder with the following command:
+For instance to check an instance of Syntehtic model located in models folder we can use the following command (note: the Synthetic model is an $m$ dimensional model with $L$ modes which can be specified by ```--args L m```):
 
 ```
 python3 check.py --model Synthetic --args 2 1 --budget 1000 --batch_size 10 --eval_mult 100 --nRuns 10 --nHOOs 1
 ```
-Here the ```--args 2 1 ``` refers to that 
+
+We use ```--model Synthetic``` to specify models name, ```--args 2 1 ``` to speify $L=2$ and $m=1$, ```--budget 1000``` to specify that samplig budget $N=1000$, ```--batch_size 10``` to specify that batch size $b=10$,  ```--eval_mult 100``` to specify that the sampling for final evaluation of the model at the optimal point returned by tool is $100$, ```--nRuns 10``` to specify the number of separate runs is $10$, ```--nHOOs 1``` to specify that batch sizenumber of instances $K=1$.
 
 You will find a similar output as output:
 ```
