@@ -105,12 +105,21 @@ The users can create their own model  python file, locate it into the ```models/
 
 In the MyModel file, the user has to create a class which is a subclass of ```SiMC``` as:
 
-```
+```ruby
+__all__ = ['MyModel']
 class MyModel(SiMC):
     def __init__(self, k=0):
         super(MyModel, self).__init__()
+        self.set_k(k)
 ```
 
+Then the user has to specify several essential components for this model. First, First, the user has to set the initial states/parameters set $\Theta/\mathcal{B}$ by calling ```set_Theta()```. For intance, suppose it has three modes that belongs to { $0, 1, 2$ } and it has two state that belong to $[-5, 1]$ and $[0, 1]$, i.e. $\Theta =$ { $x | x \in$ { $0, 1, 2$ } $\times [[-5, 1], [0, 1]]$ }, then we can express this as:
+
+```ruby
+self.set_Theta([[0, 1, 2], [-5,1], [0,1]])
+```
+
+Then, the user has to implement the function ```is_usafe(init)``` which is used to query the model at state. For a safety verification problem it basically reurns $1$ if the system is unsafe at state and $0$ otherwise. For parametehr syntehsis the function return a noisy observation at that state:
 
 # Acknowledgements
 
