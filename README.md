@@ -1,15 +1,20 @@
 # HyHooVer: Verification and Parameter Synthesis in Stochastic Systems with Hybrid State-space using Optimistic Optimization
 
-A model-free verification of a general class of control system with unknown nonlinear hybrid dynamics, where the state-space has both a continuum and a discrete component.
+This is a model-free verification tool of a general class of control system with unknown nonlinear dynamics, where the state-space has both a continuum and a discrete component. Its goal is to identify the choices of initial states or parameters that maximize a given objective function, while not having a detailed knowledge of the underlying system dynamics, and by only using noisy observations of the system.
+
+The following figure depicts rge components of HyHooVer.
 
 <p align="center">
   <img
     src="https://user-images.githubusercontent.com/42749218/225357323-e4e50a65-c564-4b0d-86f8-a38b7ae65caa.png"
     alt="HyHOO_"
-    title="Optional title"
+    title="HyHooVer Components"
     style="display: inline-block; margin: 0 auto" 
     width="600"
-    height="300">
+    height="350">
+</p>
+<p align="center">
+    <em>HyHooVer Components</em>
 </p>
   
 
