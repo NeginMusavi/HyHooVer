@@ -2,6 +2,7 @@ import gym
 import highway_env
 import numpy as np
 import sys
+
 sys.path.append('..')
 from SiMC import SiMC
 
@@ -10,8 +11,8 @@ time_horizon = 10
 env = gym.make('circular-v0')
 obs, info = env.reset()
 
-def set_initial_state(env, x_0, x_1, x_2, x_3, x_4):
 
+def set_initial_state(env, x_0, x_1, x_2, x_3, x_4):
     for k in range(len(env.road.vehicles)):
         env.road.vehicles[k].position = env.road.vehicles[k].position + np.random.normal(0, 0.1, 1)[0]
 
@@ -27,6 +28,7 @@ def set_initial_state(env, x_0, x_1, x_2, x_3, x_4):
 
     env.road.vehicles[2].speed = x_3
     env.road.vehicles[2].target_speed = x_4
+
 
 def reward(init):
     unsafe = False
@@ -49,24 +51,26 @@ def reward(init):
 
 # ---------------------------------------------------------------------------------------------------------------------
 __all__ = ['Roundabout_baseline']
+
+
 class Roundabout_baseline(SiMC):
     def __init__(self, mode_index, k=0):
         super(Roundabout_baseline, self).__init__()
 
         mode_list = [("nxr", "exr", "exr"), ("exr", "exr", "exr"), ("exr", "exr", "nxr"),
-                         ("exr", "nxr", "exr"), ("exr", "nxr", "nxr"), ("exr", "wxr", "exr"), ("exr", "wxr", "nxr"),
-                         ("exr", "sxr", "exr"), ("exr", "sxr", "nxr"), ("exr", "exr", "wxr"), ("exr", "exr", "sxr"),
-                         ("exr", "wxr", "wxr"), ("exr", "wxr", "sxr"), ("exr", "sxr", "wxr"), ("exr", "sxr", "sxr")]
+                     ("exr", "nxr", "exr"), ("exr", "nxr", "nxr"), ("exr", "wxr", "exr"), ("exr", "wxr", "nxr"),
+                     ("exr", "sxr", "exr"), ("exr", "sxr", "nxr"), ("exr", "exr", "wxr"), ("exr", "exr", "sxr"),
+                     ("exr", "wxr", "wxr"), ("exr", "wxr", "sxr"), ("exr", "sxr", "wxr"), ("exr", "sxr", "sxr")]
         mode = mode_list[mode_index]
         modes = [mode]
         green_car_init_speed = [5.05, 5.21]
         green_car_target_speed = [9.35, 9.41]
-        blue_car_init_speed = [6.79, 6.95] # the blue car which is initially located at the most left part of screen
-        blue_car_target_speed = [8.89, 9.05] # the blue car which is initially located at the most left part of screen
+        blue_car_init_speed = [6.79, 6.95]  # the blue car which is initially located at the most left part of screen
+        blue_car_target_speed = [8.89, 9.05]  # the blue car which is initially located at the most left part of screen
         search_space = [modes, green_car_init_speed, green_car_target_speed, blue_car_init_speed, blue_car_target_speed]
 
         self.set_Theta(search_space)
         self.set_k(k)
 
-    def is_unsafe(self, state):
-        return reward(state)
+    def is_unsafe(self, init):
+        return reward(init)

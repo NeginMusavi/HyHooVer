@@ -2,6 +2,7 @@ import numpy as np
 import scipy as sp
 from scipy import linalg
 import sys
+
 sys.path.append('..')
 from SiMC import SiMC
 
@@ -32,10 +33,12 @@ c_star = np.linalg.norm(c / len(x0_list))
 print("W* computed via ARE: ", w_star)
 print("c* computed via ARE: ", c_star)
 
+
 # ----------------------------------------------------------------------------------------------------------------------
 def lyapunov_equation(W):
     P = sp.linalg.solve_discrete_lyapunov((A - B @ W).T, Q + W.T @ R @ W, method=None)
     return P
+
 
 def cost_lqr(W_):
     x0_ = np.random.multivariate_normal(mean, cov, 1)
@@ -48,6 +51,7 @@ def cost_lqr(W_):
         x = A @ x + B @ u
     return c
 
+
 def check_lqr_stability(w):
     stable = True
     Aw = A - B @ w
@@ -57,7 +61,6 @@ def check_lqr_stability(w):
 
 
 def reward(init):
-
     x0 = init[0]
     x = init[1:]
 
@@ -73,17 +76,20 @@ def reward(init):
 
     return y
 
+
 # ----------------------------------------------------------------------------------------------------------------------
 __all__ = ['LQR']
+
+
 class LQR(SiMC):
     def __init__(self, k=0):
         super(LQR, self).__init__()
 
         modes = [0]
-        w1 = [-1, 4] #1st components of state-feddback gain array
-        w2 = [-4, 1] #2nd components of state-feddback gain array
+        w1 = [-1, 4]  # 1st components of state-feddback gain array
+        w2 = [-4, 1]  # 2nd components of state-feddback gain array
         self.set_Theta([modes, w1, w2])
         self.set_k(k)
 
-    def is_unsafe(self, state):
-        return reward(state)
+    def is_unsafe(self, init):
+        return reward(init)

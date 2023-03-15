@@ -1,30 +1,33 @@
-
 import numpy as np
 import math
 import sys
+
 sys.path.append('..')
 from SiMC import SiMC
 
+
 # -----------------------------------------------------------------------------
 def reward(init):
-
     # init belongs to set Theta or B
-    x_0 = init[0] #mode
-    x = init[1:] #state
+    x_0 = init[0]  # mode
+    x = init[1:]  # state
 
     if x_0 == 0:
         a = 0
     elif x_0 != 0:
         a = 0.5
-    g = math.sin(12*x[0]) * math.sin(27*x[0]) / 2 + 0.5
-    for i in range(len(x)-1):
-        g = g - x[i+1] ** 2
-    y = g + np.random.normal(0, 0.1, 1) - a # noisy observation
+    g = math.sin(12 * x[0]) * math.sin(27 * x[0]) / 2 + 0.5
+    for i in range(len(x) - 1):
+        g = g - x[i + 1] ** 2
+    y = g + np.random.normal(0, 0.1, 1) - a  # noisy observation
 
     return y
 
+
 # -----------------------------------------------------------------------------
 __all__ = ['Synthetic']
+
+
 class Synthetic(SiMC):
     def __init__(self, nc, d, k=0):
         super(Synthetic, self).__init__()
@@ -44,4 +47,3 @@ class Synthetic(SiMC):
         return reward(init)
 
 # -----------------------------------------------------------------------------
-

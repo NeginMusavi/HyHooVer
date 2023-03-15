@@ -1,11 +1,11 @@
 import numpy as np
 import sys
+
 sys.path.append('..')
 from SiMC import SiMC
 
 
 def reward(init):
-
     # init belongs to set Theta/B
     x_0 = init[0]  # mode
     x = init[1:]  # state
@@ -15,8 +15,11 @@ def reward(init):
 
     return y
 
+
 # ---------------------------------------------------------------------------------------------------------------------
 __all__ = ['MyModel']
+
+
 class MyModel(SiMC):
     def __init__(self, k=0):
         super(MyModel, self).__init__()
@@ -33,5 +36,5 @@ class MyModel(SiMC):
         self.set_Theta(search_space)
         self.set_k(k)
 
-    def is_unsafe(self, state):
-        return reward(state)
+    def is_unsafe(self, init):
+        return reward(init)

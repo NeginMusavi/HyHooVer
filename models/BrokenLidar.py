@@ -1,17 +1,20 @@
 import numpy as np
 import sys
+
 sys.path.append('..')
 from SiMC import SiMC
 
 # ----------------------------------------------------------------------------------------------------------------------
-s = 5e-2 # this parameter controls the sharpness of lidar detection probability around its optimum
+s = 5e-2  # this parameter controls the sharpness of lidar detection probability around its optimum
 time_hor = 10
+
 
 def lidar_detection_prob(theta, r):
     theta_broken = 0.08
     r_max = 500
     prob = (1 - np.exp(-1.0 * (theta - theta_broken) ** 2 / s)) * ((r - r_max) ** 2 / (r_max ** 2))
     return prob
+
 
 def reward(init):
     state = np.array(init[1:])
@@ -45,8 +48,11 @@ def reward(init):
 
     return unsafe
 
+
 # ----------------------------------------------------------------------------------------------------------------------
 __all__ = ['BrokenLidar']
+
+
 class BrokenLidar(SiMC):
     def __init__(self, k=0):
         super(BrokenLidar, self).__init__()
@@ -61,6 +67,5 @@ class BrokenLidar(SiMC):
         self.set_Theta(search_space)
         self.set_k(k)
 
-    def is_unsafe(self, state):
-        return reward(state)
-
+    def is_unsafe(self, init):
+        return reward(init)
