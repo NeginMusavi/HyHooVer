@@ -2,6 +2,16 @@
 
 A model-free verification of a general class of control system with unknown nonlinear hybrid dynamics, where the state-space has both a continuum and a discrete component.
 
+<p align="center">
+  <img
+    src="https://user-images.githubusercontent.com/42749218/225357323-e4e50a65-c564-4b0d-86f8-a38b7ae65caa.png"
+    alt="HyHOO_"
+    title="Optional title"
+    style="display: inline-block; margin: 0 auto" 
+    width="600"
+    height="300">
+</p>
+  
 
 
 # Usage
