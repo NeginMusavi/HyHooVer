@@ -14,9 +14,12 @@ The following figure depicts the components of HyHooVer.
     height="350">
 </p>
 <p align="center">
-    <em>HyHooVer Components</em>
+    <em>--- HyHooVer Components ---</em>
 </p>
   
+The tool requires python file of model to query from. Then given the model, the tool requires these parameters as input: upper bound for smoothness parameters $(\rho_{max}, \nu_{max})$, batch size parameter $b$, noise parameter $\sigma$, number of instances $K$, sampling budget $N$, number of modes $L$. We will discuss these in the usage section.
+
+# Installation 
 
 
 # Usage
@@ -60,7 +63,7 @@ optional arguments:
                         randomly. (default: False)
 ```
 
-
+For instance, to check synthetic , run the following command:
 
 # Acknowledgements
 
