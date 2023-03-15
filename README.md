@@ -122,7 +122,7 @@ self.set_Theta([[0, 1, 2], [-5,1], [0,1]])
 Then, the user has to implement the member function ```def is_usafe(self, init)``` which is used to query the model at init. For a safety verification problem it basically reurns $1$ if the system is unsafe at init and $0$ otherwise. For parametehr syntehsis the function return a noisy observation at init. For more information the user can refer to MyModel.py or other models in the ```models/``` folder.
 
 # Reproduce
-Please visit https://github.com/NeginMusavi/HyHooVer/blob/master/Reproduce.md
+Please visit Reproduce.md for more details.
 
 # Acknowledgements
 
