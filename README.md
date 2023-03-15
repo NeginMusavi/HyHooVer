@@ -26,6 +26,11 @@ git clone https://github.com/NeginMusavi/HyHooVer.git
 
 
 # Usage
+To use HyHooVer we need to run check.py. By running:
+```
+python3 check.py --help
+```
+you will find the following output:
 
 ```
 usage: check.py [-h] [--model MODEL] [--args ARGS [ARGS ...]] [--nRuns NRUNS]
@@ -71,8 +76,9 @@ For instance let's check the Syntehtic model located in models folder with the f
 ```
 python3 check.py --model Synthetic --args 2 1 --budget 1000 --batch_size 10 --eval_mult 100 --nRuns 10 --nHOOs 1
 ```
+Here the ```--args 2 1 ``` refers to that 
 
-You will find the following in the output:
+You will find a similar output as output:
 ```
 ===================================================================
 ===================================================================
