@@ -99,7 +99,7 @@ optimal values: 0.99 +/- 0.017
 optimal xs: [[(0, array([0.40576172]))], [(0, array([0.40966797]))], [(0, array([0.40966797]))], [(0, array([0.39990234]))], [(0, array([0.38964844]))], [(0, array([0.40185547]))], [(0, array([0.39990234]))], [(0, array([0.39892578]))], [(0, array([0.39990234]))], [(0, array([0.40576172]))]]
 ```
 
-
+# Verify your own model
 
 
 # Acknowledgements
