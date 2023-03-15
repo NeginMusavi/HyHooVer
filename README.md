@@ -80,7 +80,7 @@ For instance to check an instance of Syntehtic model located in models folder we
 python3 check.py --model Synthetic --args 2 1 --budget 1000 --batch_size 10 --eval_mult 100 --nRuns 10 --nHOOs 1
 ```
 
-We use ```--model Synthetic``` to specify models name, ```--args 2 1 ``` to speify $L=2$ and $m=1$, ```--budget 1000``` to specify that samplig budget $N=1000$, ```--batch_size 10``` to specify that batch size $b=10$,  ```--eval_mult 100``` to specify that the sampling for final evaluation of the model at the optimal point returned by tool is $100$, ```--nRuns 10``` to specify the number of separate runs is $10$, ```--nHOOs 1``` to specify that batch sizenumber of instances $K=1$.
+We use  ```--model Synthetic```  to specify the models name located at models folder,  ```--args 2 1 ```  to speify that $L=2$ and $m=1$,  ```--budget 1000```  to specify that sampling budget $N=1000$,  ```--batch_size 10```  to specify that batch size $b$ is $10$,  ```--eval_mult 100```  to specify that the sampling for final evaluation of the model at the optimal point returned by the tool is $100$,  ```--nRuns 10```  to specify that the number of separate runs is $10$, and  ```--nHOOs 1```  to specify that the number of HyHOO instances $K$ is $1$.
 
 You will find a similar output as output:
 ```
