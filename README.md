@@ -101,7 +101,7 @@ optimal xs: [[(0, array([0.40576172]))], [(0, array([0.40966797]))], [(0, array(
 
 # Verify your own model
 
-The users can create their own model  python file, put it into the ```models/``` folder, and modify ```models/__init__.py``` correspondingly. For example, one can create ```models/MyModel.py``` and run HyHooVer with ```python3 check.py --model MyModel --budget 1000```.
+The users can create their own model  python file, locate it into the ```models/``` folder, and modify ```models/__init__.py``` correspondingly. For instance, one can create ```models/MyModel.py```, modify ```models/__init__.py``` by adding ```from .MyModel import *``` and then verify it by HyHooVer with a command similar to ```python3 check.py --model MyModel --budget 1000```.
 
 
 # Acknowledgements
