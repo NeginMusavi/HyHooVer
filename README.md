@@ -20,6 +20,9 @@ The following figure depicts the components of HyHooVer.
 The tool requires python file of model to query from. Then given the model, the tool requires these parameters as input: upper bound for smoothness parameters $(\rho_{max}, \nu_{max})$, batch size parameter $b$, noise parameter $\sigma$, number of instances $K$, sampling budget $N$, number of modes $L$. We will discuss these in the usage section.
 
 # Installation 
+```
+git clone https://github.com/NeginMusavi/HyHooVer.git
+```
 
 
 # Usage
@@ -63,7 +66,31 @@ optional arguments:
                         randomly. (default: False)
 ```
 
-For instance, to check synthetic , run the following command:
+For instance let's check the Syntehtic model located in models folder with the following command:
+
+```
+python3 check.py --model Synthetic --args 2 1 --budget 1000 --batch_size 10 --eval_mult 100 --nRuns 10 --nHOOs 1
+```
+
+You will find the following in the output:
+```
+===================================================================
+===================================================================
+Final Results:
+===================================================================
+===================================================================
+sampling budget: 1000
+running time (s): 0.06 +/- 0.002
+memory usage (MB): 0.10 +/- 0.000
+depth in tree: 9.90 +/- 0.300
+number of nodes: [881, 881, 881, 881, 881, 881, 881, 881, 881, 881]
+number of queries: [981, 981, 981, 981, 981, 981, 981, 981, 981, 981]
+optimal values: 0.99 +/- 0.017
+optimal xs: [[(0, array([0.40576172]))], [(0, array([0.40966797]))], [(0, array([0.40966797]))], [(0, array([0.39990234]))], [(0, array([0.38964844]))], [(0, array([0.40185547]))], [(0, array([0.39990234]))], [(0, array([0.39892578]))], [(0, array([0.39990234]))], [(0, array([0.40576172]))]]
+```
+
+
+
 
 # Acknowledgements
 
