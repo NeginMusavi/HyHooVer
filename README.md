@@ -103,6 +103,14 @@ optimal xs: [[(0, array([0.40576172]))], [(0, array([0.40966797]))], [(0, array(
 
 The users can create their own model  python file, locate it into the ```models/``` folder, and modify ```models/__init__.py``` correspondingly. For instance, one can create ```models/MyModel.py```, modify ```models/__init__.py``` by adding ```from .MyModel import *``` and then verify it by HyHooVer with a command similar to ```python3 check.py --model MyModel --budget 1000```.
 
+In the MyModel file, the user has to create a class which is a subclass of ```SiMC``` as:
+
+```
+class MyModel(SiMC):
+    def __init__(self, k=0):
+        super(MyModel, self).__init__()
+```
+
 
 # Acknowledgements
 
