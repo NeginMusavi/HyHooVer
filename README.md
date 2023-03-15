@@ -119,7 +119,7 @@ Then the user has to specify several essential components for this model. First,
 self.set_Theta([[0, 1, 2], [-5,1], [0,1]])
 ```
 
-Then, the user has to implement the function ```is_usafe(init)``` which is used to query the model at state. For a safety verification problem it basically reurns $1$ if the system is unsafe at state and $0$ otherwise. For parametehr syntehsis the function return a noisy observation at that state:
+Then, the user has to implement the function ```def is_usafe(self, init)``` which is used to query the model at init. For a safety verification problem it basically reurns $1$ if the system is unsafe at init and $0$ otherwise. For parametehr syntehsis the function return a noisy observation at init. For more information the user can refer to MyModel.py or other models in the ```models/``` folder.
 
 # Acknowledgements
 
