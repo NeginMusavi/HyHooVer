@@ -2,7 +2,7 @@
 
 This is a model-free verification tool of a general class of control system with unknown nonlinear dynamics, where the state-space has both a continuum and a discrete component. Its goal is to identify the choices of initial states or parameters that maximize a given objective function, while not having a detailed knowledge of the underlying system dynamics, and by only using noisy observations of the system.
 
-The following figure depicts rge components of HyHooVer.
+The following figure depicts the components of HyHooVer.
 
 <p align="center">
   <img
