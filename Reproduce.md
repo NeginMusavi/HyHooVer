@@ -87,5 +87,10 @@ python3 run_baseline_HOO_Roundabout.py --model Roundabout  --nRuns 10 --nHOOs 1 
 
 The final results will be saved in file ```output_baseline_roundabout.dat```.
 
-But before running these comments one need to install the "Highway_env" car simulator. After installing this one needs to add ```circular_env.py``` environment file to its ```env/``` folder and register the environment in the ```env/__init__.py```. It is also noted that the resuls shown in Figure 10 is obtained by using an older version of "Highway_env" that can be retrived at XXXX. The corresponing files for this plot are ```Roundabout_.py``` and ```circular_env_.py```. However, one can use ```Roundabout.py``` and ```circular_env.py``` to obtain similar results. 
+But before running these comments one need to install the "Highway_env" car simulator (see https://github.com/eleurent/highway-env). After installing this one needs to add ```circular_env.py``` environment file to its ```env/``` folder and register the environment in the ```env/__init__.py```. It is also noted that the resuls shown in Figure 10 is obtained by using an older version of "Highway_env" that can be retrived at XXXX. The corresponing files for this plot are ```Roundabout_.py``` and ```circular_env_.py```. However, one can use ```Roundabout.py``` and ```circular_env.py``` to obtain similar results. 
+
+## Notes on using BoTorch:
+Please see https://github.com/pytorch/botorch and https://ax.dev/docs/installation.html to intall BoTorch and its Ax module which we use to verify our models.
+
+## Notes on Using PlasmaLab:
 
