@@ -22,6 +22,8 @@ The tool requires python file of model to query from. Then given the model, the 
 # Installation 
 ```
 git clone https://github.com/NeginMusavi/HyHooVer.git
+cd HyHooVer/
+pip3 install -r requirements.txt
 ```
 
 
