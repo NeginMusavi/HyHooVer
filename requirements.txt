@@ -1,4 +1,6 @@
-numpy
+numpy>=1.20.3
+ax-platform
+botorch>=0.1.3
 pympler
 llist
 zmq
